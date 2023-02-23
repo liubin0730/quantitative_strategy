@@ -11,29 +11,13 @@ def account():
         {
             'apiKey': apikey,
             'secret': secretkey,
-            'password': API_PASSPHRASE,
-            'options': {
-                'defaultType': 'swap'
-            },
-            'headers': {
-                'x-simulated-trading': '1'
-            }
+            'password': API_PASSPHRASE
         })
     print(exchange.urls)
-    exchange.load_markets()
 
-    # bitmex = ccxt.bitmex({
-    #     "apiKey": "X6hs2-akD2YUePded_Gj1l0X",
-    #     "secret": "bDcl0BJ-KkaHUgu38IOjXdf9krHHoSe0EB3SclXNB7I_3MiT"
-    # })
-    # bitmex = ccxt.bitmex()
-    # bitmex.apiKey = "X6hs2-akD2YUePded_Gj1l0X"
-    # bitmex.secret = "bDcl0BJ-KkaHUgu38IOjXdf9krHHoSe0EB3SclXNB7I_3MiT"
-    # print(bitmex.urls)
-    # bitmex.urls['api'] = bitmex.urls['test']
     order_symbol = 'ETH/USDT'
     ETH_Last = exchange.fetch_ticker(order_symbol)['last']
-    logging.info('ETH 最新价格:' + str(ETH_Last))
+    print('ETH 最新价格:' + str(ETH_Last))
 
 
 if __name__ == '__main__':
