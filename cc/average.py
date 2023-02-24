@@ -22,8 +22,8 @@ class Average:
         self.money = self.jys.balances["USDT"]
 
         now_price = self.jys.ticker["last"]
-        logger.info("%s数量：%s %s价值：%s USDT：%s", symbol, round(self.B, 2), symbol, round(self.B * now_price, 2),
-                    round(self.money, 2))
+        logger.info("%s：%s USDT：%s 【共】：%s USDT", symbol, round(self.B * now_price, 2),
+                    round(self.money, 2), round(self.B * now_price, 2)+round(self.money, 2))
 
         self.total_money = self.B * now_price + self.money
         self.half_money = self.total_money / 2
