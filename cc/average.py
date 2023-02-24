@@ -44,9 +44,10 @@ class Average:
         logger.info('Buy_times:%s, Sell_times:%s', self.Buy_count, self.Sell_count)
 
     def if_need_trade(self, incr):
-        fl = round(abs((self.jys.ticker["last"] - self.last_trade_price) / self.last_trade_price) * 100, 2)
+        fl = round(((self.jys.ticker["last"] - self.last_trade_price) / self.last_trade_price) * 100, 2)
+
         logger.info("上次价格：%s, 当前价格：%s, 价格浮动：%s", self.last_trade_price, self.jys.ticker["last"], f"{fl}%")
-        if fl > incr:
+        if abs(fl) > incr:
             self.do_average()
             self.last_trade_price = self.jys.ticker["last"]
         logger.info("-----------------------------------------------------------")
