@@ -1,16 +1,17 @@
-# This is a sample Python script.
+import time
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from cc.mid import Mid
+from exchange.okex5 import okex5
+from cc.average import Average
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    exchange = okex5()
+    symbol = "BLUR/USDT"
+    mid = Mid(symbol, exchange)
+    mid.renovate_data()
+    average = Average(mid)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    while True:
+        time.sleep(5)
+        average.make_need_account_info()
+        average.if_need_trade(2)
