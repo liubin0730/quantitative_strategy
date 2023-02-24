@@ -49,7 +49,4 @@ class Average:
         if fl > incr:
             self.do_average()
             self.last_trade_price = self.jys.ticker["last"]
-
-    def save(self):
-        f = open("a", "w")
-        print(f)
+        logger.info("-----------------------------------------------------------")
