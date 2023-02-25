@@ -35,19 +35,21 @@ class Average:
         if self.need_buy >= 10:
             self.jys.create_limit_order('buy', self.need_buy, self.jys.ticker["ask"])
             self.Buy_count += 1
-            logger.info(f"【买入】{self.jys.symbol}:{self.need_buy}")
+            logger.info(f"【买入】{self.jys.symbol}:{self.need_buy} 【委托价格】{self.jys.ticker['ask']}")
+            return True
         elif self.need_sell >= 10:
             self.jys.create_limit_order('sell', self.need_sell, self.jys.ticker["bid"])
             self.Sell_count += 1
-            logger.info(f"【卖出】{self.jys.symbol}:{self.need_buy}")
-
+            logger.info(f"【卖出】{self.jys.symbol}:{self.need_buy} 【委托价格】{self.jys.ticker['bid']}")
+            return True
         logger.info('Buy_times:%s, Sell_times:%s', self.Buy_count, self.Sell_count)
+        return False
 
     def if_need_trade(self, incr):
         fl = round(((self.jys.ticker["last"] - self.last_trade_price) / self.last_trade_price) * 100, 2)
 
         logger.info("上次价格：%s, 当前价格：%s, 价格浮动：%s", self.last_trade_price, self.jys.ticker["last"], f"{fl}%")
         if abs(fl) > incr:
-            self.do_average()
-            self.last_trade_price = self.jys.ticker["last"]
+            if self.do_average():
+                self.last_trade_price = self.jys.ticker["last"]
         logger.info("-----------------------------------------------------------")
