@@ -8,7 +8,7 @@ logger = logging.getLogger()
 
 class MyTestCase(unittest.TestCase):
     def test_luis(self):
-        f = open("./price", encoding='utf-8')
+        f = open("price.txt", encoding='utf-8')
         line = f.readline()
         print(line)
         f.close()

@@ -15,7 +15,7 @@ class Average:
         self.last_time = time.time()
         self.Buy_count = 0
         self.Sell_count = 0
-        f = open("price", encoding='utf-8')
+        f = open("price.txt", encoding='utf-8')
         line = f.readline()
         f.close()
         self.last_trade_price = float(line)
@@ -60,7 +60,7 @@ class Average:
         if abs(fl) > incr:
             if self.do_average():
                 self.last_trade_price = self.jys.ticker["last"]
-                f = open("price", "w", encoding='utf-8')
+                f = open("price.txt", "w", encoding='utf-8')
                 f.write(str(self.jys.ticker["last"]))
                 f.close()
         logger.info("-----------------------------------------------------------")
