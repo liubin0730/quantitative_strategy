@@ -17,7 +17,7 @@ class Average:
         self.Sell_count = 0
         f = open("./price", encoding='utf-8')
         line = f.readline()
-        self.last_trade_price = line
+        self.last_trade_price = float(line)
         f.close()
 
     def make_need_account_info(self):
