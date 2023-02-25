@@ -15,9 +15,9 @@ class Average:
         self.last_time = time.time()
         self.Buy_count = 0
         self.Sell_count = 0
-        f = open("./price", encoding='utf-8')
+        f = open("price", encoding='utf-8')
         line = f.readline()
-        print(line)
+        print("---------", line)
         print(type(f))
         self.last_trade_price = float(line)
         f.close()
