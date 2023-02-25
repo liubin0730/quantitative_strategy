@@ -15,7 +15,11 @@ class Average:
         self.last_time = time.time()
         self.Buy_count = 0
         self.Sell_count = 0
-        self.last_trade_price = float(0.8164)
+        f = open("price", encoding='utf-8')
+        line = f.readline()
+        f.close()
+        self.last_trade_price = float(line)
+        logger.info("读取到last_trade_price初始值：%s", line)
 
     def make_need_account_info(self):
         self.jys.renovate_data()
@@ -34,8 +38,8 @@ class Average:
         logger.info("need_buy:%s, need_sell:%s", self.need_buy, self.need_sell)
 
     def do_average(self):
-        self.need_buy = self.need_buy if self.need_buy >= 10 else 10
-        self.need_sell = self.need_sell if self.need_sell >= 10 else 10
+        self.need_buy = 10 if 0 < self.need_buy < 10 else self.need_buy
+        self.need_sell = 10 if 0 < self.need_sell < 10 else self.need_sell
         if self.need_buy >= 10:
             self.jys.create_limit_order('buy', self.need_buy, self.jys.ticker["ask"])
             self.Buy_count += 1
@@ -56,7 +60,7 @@ class Average:
         if abs(fl) > incr:
             if self.do_average():
                 self.last_trade_price = self.jys.ticker["last"]
-                f = open("./price", "w", encoding='utf-8')
-                f.write(self.jys.ticker["last"])
+                f = open("price", "w", encoding='utf-8')
+                f.write(str(self.jys.ticker["last"]))
                 f.close()
         logger.info("-----------------------------------------------------------")
