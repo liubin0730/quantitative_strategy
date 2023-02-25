@@ -15,12 +15,7 @@ class Average:
         self.last_time = time.time()
         self.Buy_count = 0
         self.Sell_count = 0
-        f = open("price", encoding='utf-8')
-        line = f.readline()
-        print("---------", line)
-        print(type(f))
-        self.last_trade_price = float(line)
-        f.close()
+        self.last_trade_price = float(0.8164)
 
     def make_need_account_info(self):
         self.jys.renovate_data()
