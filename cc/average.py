@@ -17,6 +17,8 @@ class Average:
         self.Sell_count = 0
         f = open("./price", encoding='utf-8')
         line = f.readline()
+        print(line)
+        print(type(f))
         self.last_trade_price = float(line)
         f.close()
 
