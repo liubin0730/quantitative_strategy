@@ -38,8 +38,8 @@ class Average:
         logger.info("need_buy:%s, need_sell:%s", self.need_buy, self.need_sell)
 
     def do_average(self):
-        self.need_buy = 10 if 0 < self.need_buy < 10 else self.need_buy
-        self.need_sell = 10 if 0 < self.need_sell < 10 else self.need_sell
+        self.need_buy = 10 if 0 < self.need_buy <= 10 else self.need_buy
+        self.need_sell = 10 if 0 < self.need_sell <= 10 else self.need_sell
         if self.need_buy >= 10:
             self.jys.create_limit_order('buy', self.need_buy, self.jys.ticker["ask"])
             self.Buy_count += 1
@@ -58,6 +58,8 @@ class Average:
 
         logger.info("上次价格：%s, 当前价格：%s, 价格浮动：%s", self.last_trade_price, self.jys.ticker["last"], f"{fl}%")
         if abs(fl) > incr:
+            self.need_buy = 10 if fl < 0 else -1
+            self.need_sell = 10 if fl > 0 else -1
             if self.do_average():
                 self.last_trade_price = self.jys.ticker["last"]
                 f = open("price.txt", "w", encoding='utf-8')
