@@ -44,14 +44,14 @@ class Average:
             self.jys.create_limit_order('buy', self.need_buy, self.jys.ticker["ask"])
             self.Buy_count += 1
             logger.info(f"【买入】{self.jys.symbol}:{self.need_buy} 【委托价格】{self.jys.ticker['ask']}")
-            return True
+            return self.jys.ticker['ask']
         elif self.need_sell >= 10:
             self.jys.create_limit_order('sell', self.need_sell, self.jys.ticker["bid"])
             self.Sell_count += 1
-            logger.info(f"【卖出】{self.jys.symbol}:{self.need_buy} 【委托价格】{self.jys.ticker['bid']}")
-            return True
+            logger.info(f"【卖出】{self.jys.symbol}:{self.need_sell} 【委托价格】{self.jys.ticker['bid']}")
+            return self.jys.ticker['bid']
         logger.info('Buy_times:%s, Sell_times:%s', self.Buy_count, self.Sell_count)
-        return False
+        return 0
 
     def if_need_trade(self, incr):
         fl = round(((self.jys.ticker["last"] - self.last_trade_price) / self.last_trade_price) * 100, 2)
@@ -60,9 +60,10 @@ class Average:
         if abs(fl) > incr:
             self.need_buy = 10 if fl < 0 else -1
             self.need_sell = 10 if fl > 0 else -1
-            if self.do_average():
+            price = self.do_average()
+            if price > 0:
                 self.last_trade_price = self.jys.ticker["last"]
                 f = open("price.txt", "w", encoding='utf-8')
-                f.write(str(self.jys.ticker["last"]))
+                f.write(str(price))
                 f.close()
         logger.info("-----------------------------------------------------------")
