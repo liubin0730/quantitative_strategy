@@ -5,6 +5,8 @@ import logging.config
 logging.config.fileConfig('logging.conf')
 logger = logging.getLogger()
 
+need_trade = 20
+
 
 # 均仓策略
 class Average:
@@ -38,14 +40,14 @@ class Average:
         logger.info("need_buy:%s, need_sell:%s", self.need_buy, self.need_sell)
 
     def do_average(self):
-        self.need_buy = 10 if 0 < self.need_buy <= 10 else self.need_buy
-        self.need_sell = 10 if 0 < self.need_sell <= 10 else self.need_sell
-        if self.need_buy >= 10:
+        self.need_buy = need_trade if 0 < self.need_buy <= need_trade else self.need_buy
+        self.need_sell = need_trade if 0 < self.need_sell <= need_trade else self.need_sell
+        if self.need_buy >= need_trade:
             self.jys.create_limit_order('buy', self.need_buy, self.jys.ticker["ask"])
             self.Buy_count += 1
             logger.info(f"【买入】{self.jys.symbol}:{self.need_buy} 【委托价格】{self.jys.ticker['ask']}")
             return self.jys.ticker['ask']
-        elif self.need_sell >= 10:
+        elif self.need_sell >= need_trade:
             self.jys.create_limit_order('sell', self.need_sell, self.jys.ticker["bid"])
             self.Sell_count += 1
             logger.info(f"【卖出】{self.jys.symbol}:{self.need_sell} 【委托价格】{self.jys.ticker['bid']}")
@@ -58,8 +60,8 @@ class Average:
 
         logger.info("上次价格：%s, 当前价格：%s, 价格浮动：%s", self.last_trade_price, self.jys.ticker["last"], f"{fl}%")
         if abs(fl) > incr:
-            self.need_buy = 10 if fl < 0 else -1
-            self.need_sell = 10 if fl > 0 else -1
+            self.need_buy = need_trade if fl < 0 else -1
+            self.need_sell = need_trade if fl > 0 else -1
             price = self.do_average()
             if price > 0:
                 self.last_trade_price = self.jys.ticker["last"]
